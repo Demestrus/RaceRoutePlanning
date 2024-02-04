@@ -1,19 +1,23 @@
-using Api.Models;
+using Application;
+using Application.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class RaceRouteController : ControllerBase
 {
-    public RaceRouteController()
+    private readonly IRaceRouteService _service;
+
+    public RaceRouteController(IRaceRouteService service)
     {
+        _service = service;
     }
 
     [HttpGet]
-    public IEnumerable<Track> Get()
+    public ActionResult<RaceRoute> Get(int? maxPointAmount = null)
     {
-        return Enumerable.Empty<Track>();
+        return _service.GenerateRaceRoute(maxPointAmount);
     }
 }

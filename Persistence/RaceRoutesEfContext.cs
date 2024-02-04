@@ -15,6 +15,8 @@ public class RaceRoutesEfContext : DbContext
 
     public void Seed()
     {
+        Database.EnsureCreated();
+        
         if (Points.Any() || Tracks.Any()) return;
         
         AddRange(RoutePointsData.Points);
