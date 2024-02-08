@@ -1,8 +1,15 @@
 {
   "dependencies": {
+    "@emotion/cache": "^11.11.0",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.15.7",
+    "@mui/material-nextjs": "^5.15.9",
+    "@mui/x-charts": "^6.19.3",
     "next": "^14.1.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "tss-react": "^4.9.4"
   },
   "scripts": {
     "dev": "next dev",
@@ -13,6 +20,13 @@
   "devDependencies": {
     "@types/node": "20.11.16",
     "@types/react": "18.2.52",
+    "prettier": "3.2.5",
     "typescript": "5.3.3"
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 4,
+    "semi": true,
+    "singleQuote": true
   }
 }
