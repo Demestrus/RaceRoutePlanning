@@ -1,11 +1,14 @@
-﻿export default function RootLayout({
-                                       children,
-                                   }: {
-    children: React.ReactNode
+﻿import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
+export default function RootLayout({
+    children,
+}: {
+    children: React.ReactNode;
 }) {
     return (
         <html lang="en">
-        <body>{children}</body>
+            <AppRouterCacheProvider>
+                <body>{children}</body>
+            </AppRouterCacheProvider>
         </html>
-    )
+    );
 }
