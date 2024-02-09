@@ -1,4 +1,6 @@
-﻿export default async function getRaceRoute(
+﻿import { IRaceRoute } from './models';
+
+export default async function getRaceRoute(
     maxPointAmount?: number
 ): Promise<IRaceRoute> {
     try {
