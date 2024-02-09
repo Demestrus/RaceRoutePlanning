@@ -1,21 +1,21 @@
-﻿enum Surface {
+﻿export enum Surface {
     SAND,
     ASPHALT,
     GROUND,
 }
-enum MaxSpeed {
+export enum MaxSpeed {
     FAST,
     NORMAL,
     SLOW,
 }
 
-interface IPoint {
+export interface IPoint {
     id: number;
     name: string;
     height: number;
 }
 
-interface ITrack {
+export interface ITrack {
     firstId: number;
     secondId: number;
     distance: number;
@@ -23,14 +23,19 @@ interface ITrack {
     maxSpeed: MaxSpeed;
 }
 
-interface IRaceRoute {
+export interface IRaceRoute {
     routePoints: IPoint[];
     tracksInfo: ITrack[];
 }
 
-interface IChartPoint {
+export interface IChartPoint {
     id: number;
     name: string;
     height: number;
     distance: number;
+    track?: {
+        prevCord: number;
+        surface: Surface;
+        maxSpeed: MaxSpeed;
+    };
 }
