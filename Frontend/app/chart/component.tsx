@@ -1,7 +1,7 @@
 ﻿'use client';
 
 import { LineChart } from '@mui/x-charts/LineChart';
-import { styles } from './style';
+import { styles } from './styles';
 
 export type ChartProps = {
     raceRoute: IRaceRoute;
@@ -43,7 +43,6 @@ export default function Chart(props: ChartProps) {
         <div className={classes.container}>
             <LineChart
                 tooltip={{ trigger: 'axis' }}
-                slots={{}}
                 xAxis={[{ dataKey: 'distance', min: 0 }]}
                 yAxis={[{ min: 0 }]}
                 series={[{ dataKey: 'height' }]}

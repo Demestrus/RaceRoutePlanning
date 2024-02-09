@@ -1,9 +1,9 @@
 ﻿'use client';
 
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import Chart from './chart/component';
 import getRaceRoute from './apiService';
-import { Button } from '@mui/base';
+import ChartControls from './chart-controls/component';
 
 export default function Page() {
     const [data, setData] = useState<IRaceRoute>({
@@ -11,21 +11,25 @@ export default function Page() {
         tracksInfo: [],
     });
 
+    const [isLoading, changeLoadingState] = useState<boolean>(false);
+
     useEffect(() => loadData, []);
 
-    const loadData = () => {
-        getRaceRoute().then((result) => {
-            setData(result);
-        });
-    };
+    const loadData = (maxPointAmount?: number) => {
+        if (isLoading) return;
 
-    const onButtonClick = () => {
-        loadData();
+        changeLoadingState(true);
+
+        getRaceRoute(maxPointAmount)
+            .then((result) => {
+                setData(result);
+            })
+            .finally(() => changeLoadingState(false));
     };
 
     return (
         <>
-            <Button onClick={onButtonClick}>Load data</Button>
+            <ChartControls loadDataHandler={loadData} isLoading={isLoading} />
             <Chart raceRoute={data} />
         </>
     );

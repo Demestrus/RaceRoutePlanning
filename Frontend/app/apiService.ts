@@ -1,14 +1,20 @@
-﻿export default async function getRaceRoute(): Promise<IRaceRoute> {
+﻿export default async function getRaceRoute(
+    maxPointAmount?: number
+): Promise<IRaceRoute> {
     try {
-        const res = await fetch('https://localhost:7217/api/RaceRoute');
+        let url = 'https://localhost:7217/api/RaceRoute';
+        if (maxPointAmount) {
+            url += `?maxPointAmount=${maxPointAmount}`;
+        }
+        const res = await fetch(url);
         return res.json();
     } catch {
-        return Promise.resolve(fallback());
+        return Promise.resolve(fallback(maxPointAmount));
     }
 }
 
-function fallback(): IRaceRoute {
-    const count = 1 + getRandomInt(150);
+function fallback(maxPointAmount?: number): IRaceRoute {
+    const count = 1 + getRandomInt(maxPointAmount ?? 20);
 
     const result: IRaceRoute = {
         routePoints: [],
