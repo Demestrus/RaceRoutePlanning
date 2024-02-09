@@ -6,3 +6,4 @@ riderModule.iml
 frontend/.next
 frontend/node_modules
 /.idea
+/out
