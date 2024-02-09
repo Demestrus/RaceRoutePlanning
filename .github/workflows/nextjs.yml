@@ -84,7 +84,9 @@ jobs:
         with:
           path: ./Frontend/out
       - name: Create .nojekyll
-        run: echo "nojekyll" > ./Frontend/out/.nojekyll
+        run: touch .nojekyll
+        with:
+          path: ./Frontend/out
 
   # Deployment job
   deploy:
