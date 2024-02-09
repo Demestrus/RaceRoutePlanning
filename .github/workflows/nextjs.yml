@@ -83,10 +83,6 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./Frontend/out
-      - name: Create .nojekyll
-        run: touch .nojekyll
-        shell: bash
-        working-directory: ./Frontend/out
 
   # Deployment job
   deploy:
