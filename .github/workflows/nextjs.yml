@@ -85,8 +85,8 @@ jobs:
           path: ./Frontend/out
       - name: Create .nojekyll
         run: touch .nojekyll
-        with:
-          path: ./Frontend/out
+        shell: bash
+        working-directory: ./Frontend/out
 
   # Deployment job
   deploy:
