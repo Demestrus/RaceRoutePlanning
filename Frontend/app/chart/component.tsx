@@ -2,14 +2,15 @@
 
 import { LineChart } from '@mui/x-charts/LineChart';
 import { styles } from './styles';
-import BackgroundRectSwitch from './backgroundRectSwitch';
+import BackgroundRect from './backgroundRect';
 import { IChartPoint, IRaceRoute, MaxSpeed, Surface } from '../models';
+import RouteColor from './routeColor';
 
 export type ChartProps = {
     raceRoute: IRaceRoute;
 };
 
-const transformPropsIntoData = (raceRoute: IRaceRoute): any[] => {
+const transformPropsIntoData = (raceRoute: IRaceRoute): IChartPoint[] => {
     let result: IChartPoint[] = [];
 
     for (let i = 0; i < raceRoute.routePoints.length; i++) {
@@ -55,25 +56,36 @@ export default function Chart(props: ChartProps) {
                 tooltip={{ trigger: 'axis' }}
                 xAxis={[{ dataKey: 'distance', min: 0 }]}
                 yAxis={[{ min: 0 }]}
-                series={[{ dataKey: 'height' }]}
-                dataset={data}
+                series={[{ id: 'route', dataKey: 'height' }]}
+                dataset={data as any[]}
                 className={classes.chart}
                 axisHighlight={{
-                    x: 'band',
+                    x: 'line',
                     y: 'none',
+                }}
+                sx={{
+                    '& .MuiLineElement-series-route': {
+                        stroke: "url('#maxSpeedGradient')",
+                        strokeDasharray: '10 3',
+                        strokeWidth: 3,
+                    },
                 }}
             >
                 {data.map((point: IChartPoint) => {
                     if (!point.track) return;
 
                     return (
-                        <BackgroundRectSwitch
+                        <BackgroundRect
+                            key={`Rect_${point.id}`}
                             firstPoint={point.track.prevCord}
                             secondPoint={point.distance}
                             surface={point.track.surface}
                         />
                     );
                 })}
+                <defs>
+                    <RouteColor id={'maxSpeedGradient'} points={data} />
+                </defs>
             </LineChart>
         </div>
     );

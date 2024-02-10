@@ -1,17 +1,17 @@
 ﻿import { useDrawingArea, useXScale, useYScale } from '@mui/x-charts';
 import { Surface } from '../models';
 
-type BackgroundRectSwitchProps = {
+type BackgroundRectProps = {
     firstPoint: number;
     secondPoint: number;
     surface: Surface;
 };
 
-export default function BackgroundRectSwitch({
+export default function BackgroundRect({
     surface,
     firstPoint,
     secondPoint,
-}: BackgroundRectSwitchProps) {
+}: BackgroundRectProps) {
     const { top, height, bottom } = useDrawingArea();
     const svgHeight = top + bottom + height;
 
@@ -29,10 +29,10 @@ export default function BackgroundRectSwitch({
 
     switch (surface) {
         case Surface.GROUND:
-            color = '#11B678';
+            color = '#37DB74';
             break;
         case Surface.ASPHALT:
-            color = '#DDD';
+            color = '#bbb';
             break;
         case Surface.SAND:
             color = '#FFFF8F';
@@ -46,7 +46,7 @@ export default function BackgroundRectSwitch({
             width={width}
             fill={color}
             height={yBottom}
-            opacity={0.5}
+            opacity={0.4}
         />
     );
 }
