@@ -3,7 +3,7 @@
 export const styles = tss.create({
     container: {
         display: 'flex',
-        height: '95vh',
+        height: '90vh',
     },
     chart: {
         flex: '1 1 auto',
