@@ -30,18 +30,18 @@ export default function RouteColor({ id, points }: RouteColorProps) {
 
     let stops = [];
 
-    for (let i = 1; i < points.length; i++) {
-        const prevPoint = points[i - 1];
-        const nextPoint = points[i];
+    for (let i = 0; i < points.length - 1; i++) {
+        const point = points[i];
+        const nextPoint = points[i + 1];
 
-        const offset = nextPoint.distance / maxDistance;
+        const offset = point.distance / maxDistance;
 
-        if (prevPoint.track) {
+        if (point.track) {
             stops.push(
                 <stop
-                    key={`GradientFirstStop_${prevPoint.id}`}
+                    key={`GradientFirstStop_${point.id}`}
                     offset={offset}
-                    stopColor={matchColor(prevPoint.track.maxSpeed)}
+                    stopColor={matchColor(point.track.maxSpeed)}
                 />
             );
         }

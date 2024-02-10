@@ -36,22 +36,10 @@ export default function toolTipContent({
                     <TableRow header={'Name'} item={point.name} />
                     <TableRow
                         header={'Distance between'}
-                        item={point.distance - point.track?.prevCord}
+                        item={point.distance - point.track?.prevCord ?? 0}
                     />
                     <TableRow header={'Total distance'} item={point.distance} />
                     <TableRow header={'Point height'} item={point.height} />
-                    {point.track && (
-                        <>
-                            <TableRow
-                                header={'Max speed'}
-                                item={MaxSpeed[point.track.maxSpeed]}
-                            />
-                            <TableRow
-                                header={'Surface'}
-                                item={Surface[point.track?.surface]}
-                            />
-                        </>
-                    )}
                 </tbody>
             </table>
         </Paper>
