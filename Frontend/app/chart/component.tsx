@@ -2,9 +2,10 @@
 
 import { LineChart } from '@mui/x-charts/LineChart';
 import { styles } from './styles';
-import BackgroundRect from './backgroundRect';
 import { IChartPoint, IRaceRoute, MaxSpeed, Surface } from '../models';
+import BackgroundRect from './backgroundRect';
 import RouteColor from './routeColor';
+import tooltipContent from './tooltipContent';
 
 export type ChartProps = {
     raceRoute: IRaceRoute;
@@ -45,18 +46,24 @@ const transformPropsIntoData = (raceRoute: IRaceRoute): IChartPoint[] => {
     return result;
 };
 
-export default function Chart(props: ChartProps) {
-    const data = props.raceRoute ? transformPropsIntoData(props.raceRoute) : [];
+export default function Chart({ raceRoute }: ChartProps) {
+    const data = raceRoute ? transformPropsIntoData(raceRoute) : [];
 
     const { cx, classes } = styles();
 
     return (
         <div className={classes.container}>
             <LineChart
-                tooltip={{ trigger: 'axis' }}
+                tooltip={{
+                    trigger: 'axis',
+                }}
+                slots={{
+                    axisContent: (props) =>
+                        tooltipContent({ points: data, ...props }),
+                }}
                 xAxis={[{ dataKey: 'distance', min: 0 }]}
                 yAxis={[{ min: 0 }]}
-                series={[{ id: 'route', dataKey: 'height' }]}
+                series={[{ id: 'route', dataKey: 'height', color: '#000' }]}
                 dataset={data as any[]}
                 className={classes.chart}
                 axisHighlight={{
