@@ -16,7 +16,7 @@ export default async function getRaceRoute(
 }
 
 function fallback(maxPointAmount?: number): IRaceRoute {
-    const count = 1 + getRandomInt(maxPointAmount ?? 20);
+    const count = maxPointAmount ?? 1 + getRandomInt(20);
 
     const result: IRaceRoute = {
         routePoints: [],
