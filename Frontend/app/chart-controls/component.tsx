@@ -49,12 +49,16 @@ export default function ChartControls(props: ChartControlsProps) {
     };
 
     return (
-        <Stack className={classes.stack} spacing={2} direction={'row'}>
+        <Stack
+            direction={window.screen.width > 600 ? 'row' : 'column'}
+            spacing={1}
+        >
             <Button
                 variant={'outlined'}
                 onClick={onButtonClick}
                 disabled={error || props.isLoading}
                 size={'small'}
+                className={classes.button}
             >
                 Generate race route
             </Button>
