@@ -2,6 +2,7 @@
 import { ChartsAxisContentProps } from '@mui/x-charts/ChartsTooltip/ChartsAxisTooltipContent';
 import { Paper } from '@mui/material';
 import { styles } from './styles';
+import useDeviceSize from '../utils/deviceSize';
 
 type toolTipContentProps = ChartsAxisContentProps & {
     points: IChartPoint[];
@@ -13,6 +14,7 @@ export default function toolTipContent({
     if (points.length === 0) return;
 
     const { cx, classes } = styles();
+    const [width, height] = useDeviceSize();
 
     const point = points[dataIndex];
 
@@ -27,7 +29,10 @@ export default function toolTipContent({
 
     return (
         <Paper
-            className={classes.tooltip}
+            className={cx(
+                classes.tooltip,
+                width < 600 ? classes.tooltipSm : ''
+            )}
             variant="outlined"
             sx={{ padding: 2 }}
         >

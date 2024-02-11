@@ -20,6 +20,10 @@ export const styles = tss.create({
             borderCollapse: 'collapse',
         },
     },
+    tooltipSm: {
+        lineHeight: 1,
+        fontSize: '0.6em',
+    },
     tooltipRow: {
         '& > td': {
             padding: '6px 10px',
