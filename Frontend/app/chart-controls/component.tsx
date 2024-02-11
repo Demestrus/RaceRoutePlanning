@@ -9,8 +9,8 @@ import {
     TextField,
 } from '@mui/material';
 import { styles } from './styles';
-import { ChangeEvent, KeyboardEventHandler, useRef, useState } from 'react';
-import { IChartPoint } from '../models';
+import { ChangeEvent, KeyboardEventHandler, useState } from 'react';
+import useDeviceSize from '../utils/deviceSize';
 
 export type ChartControlsProps = {
     onChangeScale: (scale: number) => void;
@@ -23,6 +23,7 @@ export default function ChartControls(props: ChartControlsProps) {
 
     const [maxPointAmount, setMaxPointAmount] = useState<number | null>(null);
     const [scaleDisplayValue, setScaleDisplayValue] = useState<number>(100);
+    const [width, height] = useDeviceSize();
 
     const error = maxPointAmount !== null && maxPointAmount < 1;
 
@@ -49,10 +50,7 @@ export default function ChartControls(props: ChartControlsProps) {
     };
 
     return (
-        <Stack
-            direction={window.screen.width > 600 ? 'row' : 'column'}
-            spacing={1}
-        >
+        <Stack direction={width > 600 ? 'row' : 'column'} spacing={1}>
             <Button
                 variant={'outlined'}
                 onClick={onButtonClick}
