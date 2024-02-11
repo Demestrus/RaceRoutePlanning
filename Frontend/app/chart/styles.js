@@ -4,6 +4,7 @@ export const styles = tss.create({
     container: {
         display: 'flex',
         height: '90vh',
+        flexFlow: 'column',
     },
     chart: {
         flex: '1 1 auto',

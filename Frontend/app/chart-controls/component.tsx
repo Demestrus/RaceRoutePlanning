@@ -1,11 +1,20 @@
 ﻿'use client';
 
-import { Button, CircularProgress, Stack, TextField } from '@mui/material';
+import {
+    Box,
+    Button,
+    CircularProgress,
+    Slider,
+    Stack,
+    TextField,
+} from '@mui/material';
 import { styles } from './styles';
-import { ChangeEvent, KeyboardEventHandler, useState } from 'react';
+import { ChangeEvent, KeyboardEventHandler, useRef, useState } from 'react';
+import { IChartPoint } from '../models';
 
 export type ChartControlsProps = {
-    loadDataHandler: (max?: number) => void;
+    onChangeScale: (scale: number) => void;
+    onLoadData: (max?: number) => void;
     isLoading: boolean;
 };
 
@@ -13,9 +22,12 @@ export default function ChartControls(props: ChartControlsProps) {
     const { cx, classes } = styles();
 
     const [maxPointAmount, setMaxPointAmount] = useState<number | null>(null);
+    const [scaleDisplayValue, setScaleDisplayValue] = useState<number>(100);
+
+    const error = maxPointAmount !== null && maxPointAmount < 1;
 
     const onButtonClick = () => {
-        props.loadDataHandler(maxPointAmount);
+        props.onLoadData(maxPointAmount);
     };
 
     const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -26,11 +38,15 @@ export default function ChartControls(props: ChartControlsProps) {
 
     const onKeyDown: KeyboardEventHandler = (event) => {
         if (event.key == 'Enter' && !error) {
-            props.loadDataHandler(maxPointAmount);
+            props.onLoadData(maxPointAmount);
         }
     };
+    const onChangeScale = (_: any, value: number | number[]) => {
+        if (Array.isArray(value)) return;
 
-    const error = maxPointAmount !== null && maxPointAmount < 1;
+        setScaleDisplayValue(value);
+        props.onChangeScale(value);
+    };
 
     return (
         <Stack className={classes.stack} spacing={2} direction={'row'}>
@@ -56,7 +72,17 @@ export default function ChartControls(props: ChartControlsProps) {
                 size="small"
                 variant={'outlined'}
             />
-            {props.isLoading && <CircularProgress />}
+            <Box width={50}>{props.isLoading && <CircularProgress />}</Box>
+            <Box width={300}>
+                Scale {scaleDisplayValue}%
+                <Slider
+                    value={scaleDisplayValue}
+                    onChange={onChangeScale}
+                    valueLabelDisplay={'off'}
+                    min={1}
+                    max={100}
+                />
+            </Box>
         </Stack>
     );
 }

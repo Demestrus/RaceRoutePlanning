@@ -6,9 +6,12 @@ import { IChartPoint, IRaceRoute, MaxSpeed, Surface } from '../models';
 import BackgroundRect from './backgroundRect';
 import RouteColor from './routeColor';
 import tooltipContent from './tooltipContent';
+import { Box, Slider } from '@mui/material';
+import { useRef, useState } from 'react';
 
 export type ChartProps = {
     raceRoute: IRaceRoute;
+    scale: number;
 };
 
 const transformPropsIntoData = (raceRoute: IRaceRoute): IChartPoint[] => {
@@ -46,14 +49,36 @@ const transformPropsIntoData = (raceRoute: IRaceRoute): IChartPoint[] => {
     return result;
 };
 
-export default function Chart({ raceRoute }: ChartProps) {
+export default function Chart({ raceRoute, scale }: ChartProps) {
     const data = raceRoute ? transformPropsIntoData(raceRoute) : [];
 
+    const [xPosition, setXPosition] = useState<number>(0);
+
+    const xMaxValue =
+        data.length > 0 ? Math.max(...data.map((s) => s.distance)) : 0;
+    const xViewPort = (xMaxValue * scale) / 100;
+    const xMaxPosition = xMaxValue - xViewPort;
+
+    if (xPosition > xMaxPosition) {
+        setXPosition(xMaxPosition);
+    }
+
+    const xOffset = xPosition + xViewPort;
+
     const { cx, classes } = styles();
+
+    const debounceRef = useRef(null);
+    const debounceSlide = (value: number) => {
+        clearTimeout(debounceRef.current);
+        debounceRef.current = setTimeout(() => {
+            setXPosition(value);
+        }, 50);
+    };
 
     return (
         <div className={classes.container}>
             <LineChart
+                disableAxisListener={true}
                 tooltip={{
                     trigger: 'axis',
                 }}
@@ -61,7 +86,13 @@ export default function Chart({ raceRoute }: ChartProps) {
                     axisContent: (props) =>
                         tooltipContent({ points: data, ...props }),
                 }}
-                xAxis={[{ dataKey: 'distance', min: 0 }]}
+                xAxis={[
+                    {
+                        dataKey: 'distance',
+                        min: xPosition,
+                        max: xOffset,
+                    },
+                ]}
                 yAxis={[{ min: 0 }]}
                 series={[{ id: 'route', dataKey: 'height', color: '#000' }]}
                 dataset={data as any[]}
@@ -78,22 +109,49 @@ export default function Chart({ raceRoute }: ChartProps) {
                     },
                 }}
             >
-                {data.map((point: IChartPoint) => {
-                    if (!point.track) return;
+                {data
+                    .filter(
+                        (p) =>
+                            p.distance > xPosition &&
+                            p.track?.prevCord < xOffset
+                    )
+                    .map((point) => {
+                        if (!point.track) return;
 
-                    return (
-                        <BackgroundRect
-                            key={`Rect_${point.id}`}
-                            firstPoint={point.track.prevCord}
-                            secondPoint={point.distance}
-                            surface={point.track.surface}
-                        />
-                    );
-                })}
+                        const firstPoint =
+                            point.track.prevCord < xPosition
+                                ? xPosition
+                                : point.track.prevCord;
+
+                        const secondPoint =
+                            point.distance > xOffset ? xOffset : point.distance;
+
+                        return (
+                            <BackgroundRect
+                                key={`Rect_${point.id}`}
+                                firstPoint={firstPoint}
+                                secondPoint={secondPoint}
+                                surface={point.track.surface}
+                            />
+                        );
+                    })}
                 <defs>
                     <RouteColor id={'maxSpeedGradient'} points={data} />
                 </defs>
             </LineChart>
+            <Box width={'75%'} height={'5%'} alignSelf={'center'}>
+                {xMaxPosition > 0 && (
+                    <Slider
+                        min={0}
+                        max={xMaxPosition}
+                        track={false}
+                        onChange={(event, value) => {
+                            if (Array.isArray(value)) return;
+                            debounceSlide(value);
+                        }}
+                    />
+                )}
+            </Box>
         </div>
     );
 }

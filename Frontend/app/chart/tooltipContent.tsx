@@ -36,7 +36,7 @@ export default function toolTipContent({
                     <TableRow header={'Name'} item={point.name} />
                     <TableRow
                         header={'Distance between'}
-                        item={point.distance - point.track?.prevCord ?? 0}
+                        item={point.distance - (point.track?.prevCord ?? 0)}
                     />
                     <TableRow header={'Total distance'} item={point.distance} />
                     <TableRow header={'Point height'} item={point.height} />
