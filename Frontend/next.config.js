@@ -2,7 +2,10 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    basePath: '/RaceRoutePlanning',
+    basePath:
+        process.env.NODE_ENV === 'production'
+            ? '/RaceRoutePlanning'
+            : undefined,
     output: 'export',
 };
 

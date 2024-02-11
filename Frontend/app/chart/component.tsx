@@ -6,8 +6,8 @@ import { IChartPoint, IRaceRoute, MaxSpeed, Surface } from '../models';
 import BackgroundRect from './backgroundRect';
 import RouteColor from './routeColor';
 import tooltipContent from './tooltipContent';
-import { Box, Slider } from '@mui/material';
 import { useRef, useState } from 'react';
+import Scroller from './scroller';
 
 export type ChartProps = {
     raceRoute: IRaceRoute;
@@ -139,19 +139,7 @@ export default function Chart({ raceRoute, scale }: ChartProps) {
                     <RouteColor id={'maxSpeedGradient'} points={data} />
                 </defs>
             </LineChart>
-            <Box width={'75%'} height={'5%'} alignSelf={'center'}>
-                {xMaxPosition > 0 && (
-                    <Slider
-                        min={0}
-                        max={xMaxPosition}
-                        track={false}
-                        onChange={(event, value) => {
-                            if (Array.isArray(value)) return;
-                            debounceSlide(value);
-                        }}
-                    />
-                )}
-            </Box>
+            <Scroller maxPosition={xMaxPosition} onChange={debounceSlide} />
         </div>
     );
 }
