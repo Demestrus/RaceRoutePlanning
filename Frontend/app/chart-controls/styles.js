@@ -1,8 +1,7 @@
 ﻿import { tss } from 'tss-react/mui';
 
 export const styles = tss.create({
-    stack: {
+    button: {
         height: '40px',
-        padding: '5px',
     },
 });
